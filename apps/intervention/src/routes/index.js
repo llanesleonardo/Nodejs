@@ -1,10 +1,10 @@
 const express = require('express');
-const { formulasRouter } = require('./formulas.routes');
+const { equationsRouter } = require('./equations.routes');
 
 function routerApi(app) {
   const apiV1 = express.Router();
   app.use('/api/v1', apiV1);
-  apiV1.use('/formulas', formulasRouter);
+  apiV1.use('/equations', equationsRouter);
 }
 
 module.exports = { routerApi };
