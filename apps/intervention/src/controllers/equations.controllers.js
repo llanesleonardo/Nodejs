@@ -11,7 +11,7 @@ class EquationsController {
 
   /**
  *  curl -X POST http://localhost:3000/api/v1/equations/harrisbenedict -H "Content-Type: application/json" -d '{"kg":100,"cm":180,"edad":34,"sexo":1}'
-
+curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harrisbenedict -H "Content-Type: application/json" -d '{"kg":100,"cm":180,"edad":34,"sexo":1}'
  */
 
   allequations(req, res, next) {
@@ -127,6 +127,16 @@ class EquationsController {
     }
   }
 
+  harrisbenedictGet(req, res, next) {
+    try {
+      res.status(200).json({
+        results: this.resultArrayHarrisB[this.resultArrayHarrisB.length - 1],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   harrisbenedictgetAll(req, res, next) {
     try {
       res.status(200).json({
@@ -166,6 +176,16 @@ class EquationsController {
     }
   }
 
+  mifflinjoerGet(req, res, next) {
+    try {
+      res.status(200).json({
+        results: this.resultArrayMifflinJ[this.resultArrayMifflinJ.length - 1],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   mifflinjoergetAll(req, res, next) {
     try {
       res.status(200).json({
@@ -196,6 +216,16 @@ class EquationsController {
       this.resultArrayFaoO.push(resultObject);
       res.status(200).json({
         message: 'Record created',
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  faoomsGet(req, res, next) {
+    try {
+      res.status(200).json({
+        results: this.resultArrayFaoO[this.resultArrayFaoO.length - 1],
       });
     } catch (error) {
       next(error);
@@ -241,6 +271,16 @@ class EquationsController {
     }
   }
 
+  valenciaGet(req, res, next) {
+    try {
+      res.status(200).json({
+        results: this.resultArrayValencia[this.resultArrayValencia.length - 1],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   valenciagetAll(req, res, next) {
     try {
       res.status(200).json({
@@ -274,6 +314,17 @@ class EquationsController {
       this.resultArraySchofield.push(resultObject);
       res.status(200).json({
         message: 'Record created',
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  schofieldGet(req, res, next) {
+    try {
+      res.status(200).json({
+        results:
+          this.resultArraySchofield[this.resultArraySchofield.length - 1],
       });
     } catch (error) {
       next(error);
