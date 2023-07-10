@@ -1,22 +1,25 @@
 class EquationsServices {
   constructor() {}
 
-  harrisbenedict(kg, cm, edad, sexo) {
+  async harrisbenedict(kg, cm, edad, sexo) {
     let stepfinal = 0;
     let exception = 0;
-    if (sexo === 1) {
-      let _step1 = 13.75 * kg;
-      let _step2 = 5.003 * cm;
-      let _step3 = 6.79 * edad;
-      stepfinal = 66.5 + _step1 + _step2 - _step3;
-    } else {
-      let _step1 = 9.56 * kg;
-      let _step2 = 1.85 * cm;
-      let _step3 = 4.68 * edad;
-      stepfinal = 655.1 + _step1 + _step2 - _step3;
-    }
+    console.log(sexo);
+    if (edad >= 18) {
+      if (sexo == 1) {
+        let _step1 = 13.75 * kg;
+        let _step2 = 5.003 * cm;
+        let _step3 = 6.79 * edad;
+        stepfinal = 66.5 + _step1 + _step2 - _step3;
+      }
 
-    if (edad < 18) {
+      if (sexo == 0) {
+        let _step1 = 9.56 * kg;
+        let _step2 = 1.85 * cm;
+        let _step3 = 4.68 * edad;
+        stepfinal = 655.1 + _step1 + _step2 - _step3;
+      }
+    } else {
       stepfinal = 0;
       exception = 1;
     }
@@ -27,18 +30,20 @@ class EquationsServices {
   mifflinjoer(kg, cm, edad, sexo) {
     let stepfinal = 0;
     let exception;
-    if (sexo === 1) {
-      let _step1 = 9.99 * kg;
-      let _step2 = 6.25 * cm;
-      let _step3 = 4.92 * edad;
-      stepfinal = _step1 + _step2 - _step3 + 5;
+    if (edad >= 18) {
+      if (sexo == 1) {
+        let _step1 = 9.99 * kg;
+        let _step2 = 6.25 * cm;
+        let _step3 = 4.92 * edad;
+        stepfinal = _step1 + _step2 - _step3 + 5;
+      }
+      if (sexo == 0) {
+        let _step1 = 9.99 * kg;
+        let _step2 = 6.25 * cm;
+        let _step3 = 4.92 * edad;
+        stepfinal = _step1 + _step2 - _step3 - 161;
+      }
     } else {
-      let _step1 = 9.99 * kg;
-      let _step2 = 6.25 * cm;
-      let _step3 = 4.92 * edad;
-      stepfinal = _step1 + _step2 - _step3 - 161;
-    }
-    if (edad < 18) {
       stepfinal = 0;
       exception = 1;
     }

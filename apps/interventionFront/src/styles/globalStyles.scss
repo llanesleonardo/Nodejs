@@ -1,0 +1,57 @@
+$backgroundwhite: #fff;
+$backgroundlightgray: lightgray;
+$backgroundgreen: #d9eee1;
+$fullwidth: 100%;
+$text_align--center: center;
+$eightywidth: $fullwidth - 20%;
+$displayflex: flex;
+$flexcolumn: column;
+$flexrow: row;
+$justifycontentcenter: center;
+$justifycontentleft: left;
+$alignitemcenter: center;
+$alignitemleft: flex-start;
+$flexwrap: wrap;
+$textstrong: bold;
+
+body,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  width: $fullwidth;
+  height: 100px;
+  padding: 50px 0px;
+
+  &_md--green {
+    background-color: $backgroundgreen;
+  }
+  h1 {
+    text-align: center;
+  }
+}
+
+label {
+  font-weight: $textstrong;
+  padding: 10px;
+  text-align: left;
+  width: $fullwidth - 30%;
+}
+
+input {
+  width: $fullwidth - 30%;
+}
+
+input[type="number"] {
+  height: 30px;
+  border: 1px solid $backgroundlightgray;
+}
+
+select {
+  height: 30px;
+  border: 1px solid $backgroundlightgray;
+  width: $fullwidth - 30%;
+}

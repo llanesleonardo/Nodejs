@@ -10,12 +10,12 @@ const equationsControllerObject = new EquationsController(
   equationsServicesObject,
 );
 
-equationsRouter.get('/harrisbenedict', (req, res, next) => {
-  equationsControllerObject.harrisbenedictgetAll(req, res, next);
+equationsRouter.get('/harrisbenedict', async (req, res, next) => {
+  await equationsControllerObject.harrisbenedictgetAll(req, res, next);
 });
 
-equationsRouter.get('/harrisbenedict/last', (req, res, next) => {
-  equationsControllerObject.harrisbenedictGet(req, res, next);
+equationsRouter.get('/harrisbenedict/last', async (req, res, next) => {
+  await equationsControllerObject.harrisbenedictGet(req, res, next);
 });
 
 equationsRouter.post(
@@ -23,8 +23,8 @@ equationsRouter.post(
   (req, res, next) => {
     validatorSchema(req, res, next, createEquationSchema);
   },
-  (req, res, next) => {
-    equationsControllerObject.harrisbenedict(req, res, next);
+  async (req, res, next) => {
+    await equationsControllerObject.harrisbenedict(req, res, next);
   },
 );
 
