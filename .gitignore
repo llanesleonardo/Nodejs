@@ -99,6 +99,7 @@ web_modules/
 .env.local
 
 /apps/intervention/.env
+/apps/interventionFront/.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -187,3 +188,5 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/node,windows,linux
 
 apps/intervention/node_modules
+apps/interventionFront/node_modules
+apps/interventionFront/dist/

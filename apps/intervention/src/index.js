@@ -8,9 +8,12 @@ const {
   logErrors,
   boomErrorHandler,
 } = require('./middlewares/errorbase.middleware');
+
+const { corsOptionsDelegate } = './middlewares/cors.handler.js';
 const app = express();
 app.use(express.json());
 app.use(helmet());
+
 app.use(cors());
 routerApi(app);
 app.use(boomErrorHandler);

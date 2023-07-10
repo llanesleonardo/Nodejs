@@ -1,0 +1,59 @@
+@import "../../styles/globalStyles.scss";
+
+.container {
+  width: $fullwidth;
+  display: $displayflex;
+  flex-direction: $flexcolumn;
+  justify-content: $justifycontentcenter;
+  align-items: $alignitemcenter;
+  flex-wrap: $flexwrap;
+
+  .container_form {
+    width: $eightywidth - 20%;
+
+    .form__title {
+      text-align: $text_align--center;
+    }
+
+    .form__message {
+      text-align: $text_align--center;
+    }
+
+    .formIntervention {
+      background-color: $backgroundlightgray;
+      padding: 30px;
+      display: $displayflex;
+      flex-direction: $flexcolumn;
+      justify-content: $justifycontentcenter;
+      align-items: $alignitemcenter;
+      flex-wrap: $flexwrap;
+
+      .submit-button {
+        background-color: $backgroundgreen;
+        border: 0px;
+        margin-top: 20px;
+        padding: 20px 10px;
+        font-weight: $textstrong;
+      }
+    }
+  }
+}
+
+.container__results {
+  width: $eightywidth - 20%;
+  display: $displayflex;
+  flex-direction: $flexrow;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  margin-top: 10px;
+  gap: 20px;
+
+  .results__initialdata {
+    width: $fullwidth - 50%;
+  }
+
+  .results__resultsdata {
+    width: $fullwidth - 50%;
+  }
+}

@@ -42,7 +42,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
         data: harrisbenedict[0],
         exception: harrisbenedict[1]
           ? 'No aplica la formula a personas menores de edad'
-          : 'No existe una exception',
+          : 'No exceptions',
         bmr: `${harrisbenedict[0]} kcal/day`,
       };
 
@@ -50,7 +50,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
         data: mifflinjoer[0],
         exception: mifflinjoer[1]
           ? 'No aplica la formula a personas menores de edad'
-          : 'No existe una exception',
+          : 'No exceptions',
         bmr: `${mifflinjoer[0]} kcal/day`,
       };
 
@@ -58,7 +58,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
         data: faooms[0],
         exception: faooms[1]
           ? 'No aplica la formula a personas menores de edad'
-          : 'No existe una exception',
+          : 'No exceptions',
         bmr: `${faooms[0]} kcal/day`,
       };
 
@@ -66,7 +66,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
         data: valencia[0],
         exception: valencia[1]
           ? 'No aplica la formula a personas menores de edad'
-          : 'No existe una exception',
+          : 'No exceptions',
         bmr: `${valencia[0]} kcal/day`,
       };
 
@@ -74,7 +74,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
         data: schofield[0],
         exception: schofield[1]
           ? 'No aplica la formula a personas menores de edad'
-          : 'No existe una exception',
+          : 'No exceptions',
         bmr: `${schofield[0]} kcal/day`,
       };
 
@@ -97,10 +97,16 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
     }
   }
 
-  harrisbenedict(req, res, next) {
+  async harrisbenedict(req, res, next) {
     const { kg, cm, edad, sexo } = req.body;
+
     try {
-      const result = this.EquationsServices.harrisbenedict(kg, cm, edad, sexo);
+      const result = await this.EquationsServices.harrisbenedict(
+        kg,
+        cm,
+        edad,
+        sexo,
+      );
       // const result = 'hola';docker
 
       const resultObject = {
@@ -108,16 +114,18 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
         type: 'harrisbenedict',
         data: result[0],
         datos_iniciales: {
-          peso: `${kg}`,
-          estaturacm: `${cm}`,
-          edad: `${edad}`,
-          sexo: `${sexo}`,
+          peso: kg,
+          estaturacm: cm,
+          edad: edad,
+          sexo: sexo,
         },
         exception: result[1]
           ? 'No aplica la formula a personas menores de edad'
-          : 'No existe una exception',
+          : 'No exceptions',
         bmr: `${result[0]} kcal/day`,
       };
+
+      console.log(resultObject);
       this.resultArrayHarrisB.push(resultObject);
       res.status(200).json({
         message: 'Record created',
@@ -127,7 +135,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
     }
   }
 
-  harrisbenedictGet(req, res, next) {
+  async harrisbenedictGet(req, res, next) {
     try {
       res.status(200).json({
         results: this.resultArrayHarrisB[this.resultArrayHarrisB.length - 1],
@@ -137,7 +145,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
     }
   }
 
-  harrisbenedictgetAll(req, res, next) {
+  async harrisbenedictgetAll(req, res, next) {
     try {
       res.status(200).json({
         results: this.resultArrayHarrisB,
@@ -164,7 +172,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
         },
         exception: result[1]
           ? 'No aplica la formula a personas menores de edad'
-          : 'No existe una exception',
+          : 'No exceptions',
         bmr: `${result[0]} kcal/day`,
       };
       this.resultArrayMifflinJ.push(resultObject);
@@ -259,7 +267,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
         },
         exception: result[1]
           ? 'No aplica la formula a personas menores de edad'
-          : 'No existe una exception',
+          : 'No exceptions',
         bmr: `${result[0]} kcal/day`,
       };
       this.resultArrayValencia.push(resultObject);
@@ -308,7 +316,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
         },
         exception: result[1]
           ? 'No aplica la formula a esta edad'
-          : 'No existe una exception',
+          : 'No exceptions',
         bmr: `${result[0]} kcal/day`,
       };
       this.resultArraySchofield.push(resultObject);
