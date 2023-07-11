@@ -2,8 +2,7 @@ const path = require("path");
 const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { EnviromentPlugin } = require("webpack");
-
+const webpack = require("webpack");
 module.exports = {
   entry: "./src/index.js",
   output: {
@@ -44,9 +43,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "[name].css",
     }),
-    new Dotenv(),
-    new EnviromentPlugin({
+    //new Dotenv(),
+    new webpack.EnvironmentPlugin({
       APP_API_URL: "https://sea-lion-app-y65pm.ondigitalocean.app/app/api/v1",
+      APP_API_URL_2: "https://sea-lion-app-y65pm.ondigitalocean.app/app/api/v1",
     }),
   ],
   devServer: {
