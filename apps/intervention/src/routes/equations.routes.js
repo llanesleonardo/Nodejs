@@ -100,8 +100,8 @@ equationsRouter.post(
   },
 );
 
-equationsRouter.get('/all', (req, res, next) => {
-  equationsControllerObject.allequationsgetAll(req, res, next);
+equationsRouter.get('/all', async (req, res, next) => {
+  await equationsControllerObject.allequationsgetAll(req, res, next);
 });
 
 equationsRouter.post(
@@ -109,8 +109,8 @@ equationsRouter.post(
   (req, res, next) => {
     validatorSchema(req, res, next, createEquationSchema);
   },
-  (req, res, next) => {
-    equationsControllerObject.allequations(req, res, next);
+  async (req, res, next) => {
+    await equationsControllerObject.allequationsTwo(req, res, next);
   },
 );
 

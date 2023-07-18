@@ -4,8 +4,23 @@ import "./FormIntervention.scss";
 const { config } = require("../../config/config");
 
 function FormIntervention() {
-  //const baseURL = `https:///api/v1/equations/harrisbenedict/last`;
-  const baseURL = `${config.APP_API_URL}/equations/harrisbenedict`;
+  const formulas = [
+    {
+      name: "Harris-Benedict",
+      applyFormula: false,
+      api: "harrisbenedict",
+    },
+    {
+      name: "Mifflin-&-Joer",
+      applyFormula: false,
+      api: "mifflinjoer",
+    },
+    { name: "FAO-OMS", applyFormula: false, api: "faooms" },
+    { name: "Valencia", applyFormula: false, api: "valencia" },
+    { name: "Schofield", applyFormula: false, api: "schofield" },
+  ];
+  const baseURL = `http://localhost:3000/api/v1/equations/`;
+  //const baseURL = `${config.APP_API_URL}/equations/`;
   const [bmr, setBmr] = useState([]);
   const [InitialData, setInitialData] = useState([]);
   const [kg, setKg] = useState("");
@@ -14,13 +29,14 @@ function FormIntervention() {
   const [sex, setSex] = useState(0);
   const [assignSex, setAssignSex] = useState("");
   const [messageServer, setMessageSever] = useState("");
+  const [formulaList, setFormulaList] = useState(formulas);
 
   useEffect(() => {
     // getLastValueBMR(baseURL, setBmr, setInitialData);
   }, []);
 
   async function getLastValueBMR(baseURL, setBmr, setInitialData) {
-    const getUrlLast = `${baseURL}/last`;
+    const getUrlLast = `${baseURL}`;
     try {
       await axios
         .get(getUrlLast)
@@ -36,23 +52,57 @@ function FormIntervention() {
     }
   }
 
-  function calculateValueBMR() {
+  async function calculateValueBMR() {
+    const numberFormulas = formulaList.filter(
+      ({ applyFormula }, index) => applyFormula === true
+    );
     const objectValues = {
       kg: kg,
       cm: cm,
       edad: age,
       sexo: sex,
+      formulaList: numberFormulas,
     };
-    // console.log(objectValues);
-    axios
-      .post(baseURL, objectValues)
-      .then(response => {
-        setMessageSever("Record created");
-        getLastValueBMR(baseURL, setBmr, setInitialData);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    if (numberFormulas.length === 1) {
+      await axios
+        .post(`${baseURL}${numberFormulas[0].api}`, objectValues)
+        .then(response => {
+          getLastValueBMR(
+            `${baseURL}${numberFormulas[0].api}/last`,
+            setBmr,
+            setInitialData
+          );
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+      await axios
+        .post(`${baseURL}all`, objectValues)
+        .then(response => {
+          getLastValueBMR(`${baseURL}all`, setBmr, setInitialData);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
+
+  function handleChanges(indexPosition) {
+    const updateCheckInput = formulaList.map(
+      ({ name, applyFormula, api }, index) => {
+        let applyFormulaResult =
+          index === indexPosition ? !applyFormula : applyFormula;
+        let recordChanged = {
+          name,
+          applyFormula: applyFormulaResult,
+          api,
+        };
+        return recordChanged;
+      }
+    );
+
+    setFormulaList(updateCheckInput);
   }
 
   return (
@@ -127,13 +177,32 @@ function FormIntervention() {
               defaultValue={sex}
               onChange={event => {
                 setSex(event.target.value);
-                console.log(sex);
               }}
             >
               <option value="0">Woman</option>
               <option value="1">Men</option>
             </select>
-
+            <h4>Formulas</h4>
+            <ul className="form__checkinputlist">
+              {formulas.map(({ name }, index) => {
+                return (
+                  <li key={index}>
+                    <label htmlFor={name} className="label">
+                      {name}
+                    </label>
+                    <input
+                      type="checkbox"
+                      id={`checkbox-${name}`}
+                      name={name}
+                      value={name}
+                      checked={formulas["applyFormula"]}
+                      onChange={() => handleChanges(index)}
+                      className="input"
+                    />
+                  </li>
+                );
+              })}
+            </ul>
             <input
               type="submit"
               value="Calculate value"
@@ -142,31 +211,39 @@ function FormIntervention() {
           </form>
         </div>
         <div>{messageServer}</div>
-        {bmr.bmr ? (
-          <div className="container__results">
-            <div className="results__initialdata">
-              <strong>Initial Data</strong>
-              <p>Age: {InitialData.edad}</p>
-              <p>Height- cm: {InitialData.estaturacm}</p>
-              <p>Weight- kg: {InitialData.peso}</p>
-              <p>Sexo: {InitialData.sexo}</p>
-            </div>
-            <div className="results__resultsdata">
-              <strong>Results</strong>
-              <div>
-                <p>BMR: {bmr.bmr}</p>
-              </div>
-              <div>
-                <p>Equation: {bmr.type}</p>
-                <p>Exception: {bmr.exception}</p>
-              </div>
-            </div>
+
+        <div className="container__results">
+          <div className="results__initialdata">
+            <strong>Initial Data</strong>
+            <p>Age: {InitialData.edad}</p>
+            <p>Height- cm: {InitialData.estaturacm}</p>
+            <p>Weight- kg: {InitialData.peso}</p>
+            <p>Sexo: {InitialData.sexo}</p>
           </div>
-        ) : (
-          <>
-            <div>No results</div>
-          </>
-        )}
+          <ul>
+            {bmr.results ? (
+              Object.keys(bmr.results).map((key, index) => {
+                return (
+                  <li key={index}>
+                    <div className="results__resultsdata">
+                      <strong>Results of {bmr.results[key].name}</strong>
+                      <div>
+                        <p>BMR: {bmr.results[key].bmr}</p>
+                      </div>
+                      <div>
+                        <p>Exception: {bmr.results[key].exception}</p>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })
+            ) : (
+              <>
+                <div>No results</div>
+              </>
+            )}
+          </ul>
+        </div>
       </div>
     </>
   );

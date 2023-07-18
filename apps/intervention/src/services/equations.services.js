@@ -4,7 +4,6 @@ class EquationsServices {
   async harrisbenedict(kg, cm, edad, sexo) {
     let stepfinal = 0;
     let exception = 0;
-    console.log(sexo);
     if (edad >= 18) {
       if (sexo == 1) {
         let _step1 = 13.75 * kg;
@@ -27,7 +26,7 @@ class EquationsServices {
     return [stepfinal, exception];
   }
 
-  mifflinjoer(kg, cm, edad, sexo) {
+  async mifflinjoer(kg, cm, edad, sexo) {
     let stepfinal = 0;
     let exception;
     if (edad >= 18) {
@@ -51,11 +50,11 @@ class EquationsServices {
     return [stepfinal, exception];
   }
 
-  faooms(kg, cm, edad, sexo) {
+  async faooms(kg, cm, edad, sexo) {
     let stepfinal = 0;
     let _varsArray = [];
     let _step2 = 0;
-    _varsArray = this.faoomsRangesElection(edad, sexo);
+    _varsArray = await this.faoomsRangesElection(edad, sexo);
     let step1 = _varsArray[0] * kg;
     if (edad <= 3) {
       _step2 = step1 - _varsArray[1];
@@ -68,7 +67,7 @@ class EquationsServices {
     return [stepfinal, 0];
   }
 
-  faoomsRangesElection(edad, sexo) {
+  async faoomsRangesElection(edad, sexo) {
     let _pesox = 0;
     let _factorx = 0;
     switch (true) {
@@ -141,7 +140,7 @@ class EquationsServices {
     return [_pesox, _factorx];
   }
 
-  valencia(kg, cm, edad, sexo) {
+  async valencia(kg, cm, edad, sexo) {
     let stepfinal;
     let exception = 0;
     let _varsArray = [];
@@ -149,7 +148,7 @@ class EquationsServices {
       stepfinal = 0;
       exception = 1;
     } else {
-      _varsArray = this.valenciaRangesElection(edad, sexo);
+      _varsArray = await this.valenciaRangesElection(edad, sexo);
       let _step1 = _varsArray[0] * kg;
       let _step2 = _step1 + _varsArray[1];
       stepfinal = _step2;
@@ -158,7 +157,7 @@ class EquationsServices {
     return [stepfinal, exception];
   }
 
-  valenciaRangesElection(edad, sexo) {
+  async valenciaRangesElection(edad, sexo) {
     let _pesox = 0;
     let _factorx = 0;
     switch (true) {
@@ -201,12 +200,12 @@ class EquationsServices {
     return [_pesox, _factorx];
   }
 
-  schofield(kg, cm, edad, sexo) {
+  async schofield(kg, cm, edad, sexo) {
     let stepfinal;
     let exception = 0;
     let _varsArray = [];
     if (edad >= 3 && edad <= 18) {
-      _varsArray = this.schofieldRangesElection(edad, sexo, kg, cm);
+      _varsArray = await this.schofieldRangesElection(edad, sexo, kg, cm);
       let _step1 = _varsArray[0] * kg;
       let _step2 = _varsArray[2] * cm;
       let _step3 = _step1 + _step2 + _varsArray[1];
@@ -219,7 +218,7 @@ class EquationsServices {
     return [stepfinal, exception];
   }
 
-  schofieldRangesElection(edad, sexo, kg, cm) {
+  async schofieldRangesElection(edad, sexo, kg, cm) {
     let _pesox = 0;
     let _estaturax = 0;
     let _factorx = 0;
