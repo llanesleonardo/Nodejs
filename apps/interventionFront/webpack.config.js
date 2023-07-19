@@ -3,6 +3,7 @@ const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
+const { process_params } = require("express/lib/router");
 module.exports = {
   entry: "./src/index.js",
   output: {
@@ -45,8 +46,11 @@ module.exports = {
     }),
     //new Dotenv(),
     new webpack.EnvironmentPlugin({
-      APP_API_URL: "https://sea-lion-app-y65pm.ondigitalocean.app/app/api/v1",
+      APP_API_URL:
+        process.env.APP_API_URL ||
+        "https://sea-lion-app-y65pm.ondigitalocean.app/app/api/v1",
       APP_API_URL_2: "https://sea-lion-app-y65pm.ondigitalocean.app/app/api/v1",
+      APP_API_KEY: process.env.API_KEY || "",
     }),
   ],
   devServer: {
