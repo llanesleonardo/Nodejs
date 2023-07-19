@@ -19,8 +19,8 @@ function FormIntervention() {
     { name: "Valencia", applyFormula: false, api: "valencia" },
     { name: "Schofield", applyFormula: false, api: "schofield" },
   ];
-  const baseURL = `http://localhost:3000/api/v1/equations/`;
-  //const baseURL = `${config.APP_API_URL}/equations/`;
+  //const baseURL = `http://localhost:3000/api/v1/equations/`;
+  const baseURL = `${config.APP_API_URL}/equations/`;
   const [bmr, setBmr] = useState([]);
   const [InitialData, setInitialData] = useState([]);
   const [kg, setKg] = useState("");
