@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./FormIntervention.scss";
-const { config } = require("../../config/config");
+//const { config } = require("../../config/config");
 
 function FormIntervention() {
   const formulas = [
@@ -20,7 +20,7 @@ function FormIntervention() {
     { name: "Schofield", applyFormula: false, api: "schofield" },
   ];
   //const baseURL = `http://localhost:3000/api/v1/equations/`;
-  const baseURL = `${config.APP_API_URL}/equations/`;
+  const baseURL = `${process.env.API_URL}/equations/`;
   const [bmr, setBmr] = useState([]);
   const [InitialData, setInitialData] = useState([]);
   const [kg, setKg] = useState("");
@@ -63,7 +63,9 @@ function FormIntervention() {
       edad: age,
       sexo: sex,
       formulaList: numberFormulas,
+      apikey: window.localStorage["API_KEY"],
     };
+    console.log(window.localStorage["API_KEY"]);
     if (numberFormulas.length === 1) {
       await axios
         .post(`${baseURL}${numberFormulas[0].api}`, objectValues)
