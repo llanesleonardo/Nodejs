@@ -23,7 +23,17 @@ class EquationsServices {
       exception = 1;
     }
 
-    return [stepfinal, exception];
+    const finalObject = await this.createFinalObject(
+      [stepfinal, exception],
+      kg,
+      cm,
+      edad,
+      sexo,
+      'harrisbenedict',
+      'No aplica la formula a personas menores de edad',
+    );
+    // return [stepfinal, exception];
+    return finalObject;
   }
 
   async mifflinjoer(kg, cm, edad, sexo) {
@@ -47,7 +57,17 @@ class EquationsServices {
       exception = 1;
     }
 
-    return [stepfinal, exception];
+    const finalObject = await this.createFinalObject(
+      [stepfinal, exception],
+      kg,
+      cm,
+      edad,
+      sexo,
+      'mifflinjoer',
+      'No aplica la formula a personas menores de edad',
+    );
+    // return [stepfinal, exception];
+    return finalObject;
   }
 
   async faooms(kg, cm, edad, sexo) {
@@ -64,7 +84,17 @@ class EquationsServices {
 
     stepfinal = _step2;
 
-    return [stepfinal, 0];
+    const finalObject = await this.createFinalObject(
+      [stepfinal, 0],
+      kg,
+      cm,
+      edad,
+      sexo,
+      'faooms',
+      'No aplica la formula a personas menores de edad',
+    );
+    // return [stepfinal, 0];
+    return finalObject;
   }
 
   async faoomsRangesElection(edad, sexo) {
@@ -154,7 +184,17 @@ class EquationsServices {
       stepfinal = _step2;
     }
 
-    return [stepfinal, exception];
+    const finalObject = await this.createFinalObject(
+      [stepfinal, exception],
+      kg,
+      cm,
+      edad,
+      sexo,
+      'valencia',
+      'No aplica la formula a personas menores de edad',
+    );
+    //return [stepfinal, exception];
+    return finalObject;
   }
 
   async valenciaRangesElection(edad, sexo) {
@@ -215,7 +255,17 @@ class EquationsServices {
       exception = 1;
     }
 
-    return [stepfinal, exception];
+    const finalObject = await this.createFinalObject(
+      [stepfinal, exception],
+      kg,
+      cm,
+      edad,
+      sexo,
+      'schofield',
+      'No aplica la formula a personas menores de edad',
+    );
+    //return [stepfinal, exception];
+    return finalObject;
   }
 
   async schofieldRangesElection(edad, sexo, kg, cm) {
@@ -256,5 +306,35 @@ class EquationsServices {
 
     return [_pesox, _factorx, _estaturax];
   }
+
+  async createFinalObject(
+    resultsFormula,
+    kg,
+    cm,
+    edad,
+    sexo,
+    nameformula,
+    exception,
+  ) {
+    const finalObject = {
+      name: `${nameformula}`,
+      message: 'Equation found',
+      type: `${nameformula}`,
+      datos_iniciales: {
+        peso: kg,
+        estaturacm: cm,
+        edad: edad,
+        sexo: sexo,
+      },
+      results: {
+        data: resultsFormula[0],
+        exception: resultsFormula[1] ? `${exception}` : 'No exceptions',
+        bmr: `${resultsFormula[0]} kcal/day`,
+      },
+    };
+
+    return finalObject;
+  }
 }
+
 module.exports = EquationsServices;

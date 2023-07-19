@@ -19,8 +19,8 @@ function FormIntervention() {
     { name: "Valencia", applyFormula: false, api: "valencia" },
     { name: "Schofield", applyFormula: false, api: "schofield" },
   ];
-  //const baseURL = `http://localhost:3000/api/v1/equations/`;
-  const baseURL = `${config.APP_API_URL}/equations/`;
+  const baseURL = `http://localhost:3000/api/v1/equations/`;
+  //const baseURL = `${config.APP_API_URL}/equations/`;
   const [bmr, setBmr] = useState([]);
   const [InitialData, setInitialData] = useState([]);
   const [kg, setKg] = useState("");
@@ -41,6 +41,7 @@ function FormIntervention() {
       await axios
         .get(getUrlLast)
         .then(res => {
+          console.log(res.data.results);
           setBmr(res.data.results);
           setInitialData(res.data.results.datos_iniciales);
         })
@@ -81,6 +82,7 @@ function FormIntervention() {
         .post(`${baseURL}all`, objectValues)
         .then(response => {
           getLastValueBMR(`${baseURL}all`, setBmr, setInitialData);
+          console.log(response);
         })
         .catch(err => {
           console.log(err);
@@ -228,10 +230,10 @@ function FormIntervention() {
                     <div className="results__resultsdata">
                       <strong>Results of {bmr.results[key].name}</strong>
                       <div>
-                        <p>BMR: {bmr.results[key].bmr}</p>
+                        <p>BMR: {bmr.results[key].results.bmr}</p>
                       </div>
                       <div>
-                        <p>Exception: {bmr.results[key].exception}</p>
+                        <p>Exception: {bmr.results[key].results.exception}</p>
                       </div>
                     </div>
                   </li>

@@ -10,8 +10,8 @@ class EquationsController {
   }
 
   /**
- *  curl -X POST http://localhost:3000/api/v1/equations/harrisbenedict -H "Content-Type: application/json" -d '{"kg":100,"cm":180,"edad":34,"sexo":1}'
-curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harrisbenedict -H "Content-Type: application/json" -d '{"kg":100,"cm":180,"edad":34,"sexo":1}'
+ *  curl -X POST http://localhost:3000/api/v1/ -H "Content-Type: application/json" -d '{"kg":100,"cm":180,"edad":34,"sexo":1}'
+curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/ -H "Content-Type: application/json" -d '{"kg":100,"cm":180,"edad":34,"sexo":1}'
  */
 
   async allequationsTwo(req, res, next) {
@@ -27,7 +27,8 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
           sexo: `${sexo}`,
         },
       };
-      const resultObjectNested = {};
+      let resultObject2 = {};
+      // let resultObjectNested = {};
       await formulaList.forEach(async (item) => {
         let valueFormula;
         switch (item.api) {
@@ -37,15 +38,14 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
               cm,
               edad,
               sexo,
+              `${item.api}`,
+              'No aplica la formula',
             );
-            resultObjectNested[`${item.api}`] = {
-              name: `${item.api}`,
-              data: valueFormula[0],
-              exception: valueFormula[1]
-                ? 'No aplica la formula a personas menores de edad'
-                : 'No exceptions ',
-              bmr: `${valueFormula[0]} kcal/day`,
+
+            resultObject2[`${item.api}`] = {
+              ...valueFormula,
             };
+
             break;
           case 'mifflinjoer':
             valueFormula = await this.EquationsServices.mifflinjoer(
@@ -53,15 +53,14 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
               cm,
               edad,
               sexo,
+              `${item.api}`,
+              'No aplica la formula',
             );
-            resultObjectNested[`${item.api}`] = {
-              name: `${item.api}`,
-              data: valueFormula[0],
-              exception: valueFormula[1]
-                ? 'No aplica la formula a personas menores de edad'
-                : 'No exceptions',
-              bmr: `${valueFormula[0]} kcal/day`,
+
+            resultObject2[`${item.api}`] = {
+              ...valueFormula,
             };
+
             break;
           case 'faooms':
             valueFormula = await this.EquationsServices.faooms(
@@ -69,15 +68,14 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
               cm,
               edad,
               sexo,
+              `${item.api}`,
+              'No aplica la formula',
             );
-            resultObjectNested[`${item.api}`] = {
-              name: `${item.api}`,
-              data: valueFormula[0],
-              exception: valueFormula[1]
-                ? 'No aplica la formula a personas menores de edad'
-                : 'No exceptions',
-              bmr: `${valueFormula[0]} kcal/day`,
+
+            resultObject2[`${item.api}`] = {
+              ...valueFormula,
             };
+
             break;
           case 'valencia':
             valueFormula = await this.EquationsServices.valencia(
@@ -85,15 +83,14 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
               cm,
               edad,
               sexo,
+              `${item.api}`,
+              'No aplica la formula',
             );
-            resultObjectNested[`${item.api}`] = {
-              name: `${item.api}`,
-              data: valueFormula[0],
-              exception: valueFormula[1]
-                ? 'No aplica la formula a personas menores de edad'
-                : 'No exceptions',
-              bmr: `${valueFormula[0]} kcal/day`,
+
+            resultObject2[`${item.api}`] = {
+              ...valueFormula,
             };
+
             break;
           case 'schofield':
             valueFormula = await this.EquationsServices.schofield(
@@ -101,22 +98,31 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
               cm,
               edad,
               sexo,
+              `${item.api}`,
+              'No aplica la formula',
             );
-            resultObjectNested[`${item.api}`] = {
+
+            resultObject2[`${item.api}`] = {
+              ...valueFormula,
+            };
+            /*   resultObjectNested[`${item.api}`] = {
               name: `${item.api}`,
               data: valueFormula[0],
               exception: valueFormula[1]
                 ? `No aplica la formula a personas de esta edad  -> ${edad}`
                 : 'No exceptions',
               bmr: `${valueFormula[0]} kcal/day`,
-            };
+            };*/
+
             break;
           default:
             break;
         }
       });
-      resultObject['results'] = resultObjectNested;
+      // resultObject['results2'] = await resultObjectNested;
+      resultObject['results'] = await resultObject2;
       this.resultAllEquations.push(resultObject);
+
       res.status(200).json({
         message: 'Records created',
         result: this.resultAllEquations,
@@ -212,35 +218,32 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
   }
 
   async harrisbenedict(req, res, next) {
-    const { kg, cm, edad, sexo, formulaList } = req.body;
+    const { kg, cm, edad, sexo } = req.body;
+    const resultObject = {
+      message: 'Equation found',
+      type: 'BMR Equations',
+      datos_iniciales: {
+        peso: `${kg}`,
+        estaturacm: `${cm}`,
+        edad: `${edad}`,
+        sexo: `${sexo}`,
+      },
+    };
+
+    let resultObject2 = {};
     try {
-      const result = await this.EquationsServices.harrisbenedict(
+      const resultObjectValue = await this.EquationsServices.harrisbenedict(
         kg,
         cm,
         edad,
         sexo,
+        `harrisbenedict`,
+        'No aplica la formula',
       );
-      // const result = 'hola';docker
-
-      const resultObject = {
-        message: 'Equation found',
-        type: 'harrisbenedict',
-        datos_iniciales: {
-          peso: kg,
-          estaturacm: cm,
-          edad: edad,
-          sexo: sexo,
-        },
-        results: {
-          harrisbenedict: {
-            data: result[0],
-            exception: result[1]
-              ? 'No aplica la formula a personas menores de edad'
-              : 'No exceptions',
-            bmr: `${result[0]} kcal/day`,
-          },
-        },
+      resultObject2[`harrisbenedict`] = {
+        ...resultObjectValue,
       };
+      resultObject['results'] = await resultObject2;
       this.resultArrayHarrisB.push(resultObject);
       res.status(200).json({
         message: 'Record created',
@@ -272,33 +275,32 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
 
   async mifflinjoer(req, res, next) {
     const { kg, cm, edad, sexo } = req.body;
+
+    const resultObject = {
+      message: 'Equation found',
+      type: 'BMR Equations',
+      datos_iniciales: {
+        peso: `${kg}`,
+        estaturacm: `${cm}`,
+        edad: `${edad}`,
+        sexo: `${sexo}`,
+      },
+    };
+
+    let resultObject2 = {};
     try {
-      const result = await this.EquationsServices.mifflinjoer(
+      const resultObjectValue = await this.EquationsServices.mifflinjoer(
         kg,
         cm,
         edad,
         sexo,
+        `mifflinjoer`,
+        'No aplica la formula',
       );
-      // const result = 'hola';docker
-      const resultObject = {
-        message: 'Equation found',
-        type: 'mifflinjoer',
-        datos_iniciales: {
-          peso: `${kg}`,
-          estaturacm: `${cm}`,
-          edad: `${edad}`,
-          sexo: `${sexo}`,
-        },
-        results: {
-          mifflinjoer: {
-            data: result[0],
-            exception: result[1]
-              ? 'No aplica la formula a personas menores de edad'
-              : 'No exceptions',
-            bmr: `${result[0]} kcal/day`,
-          },
-        },
+      resultObject2[`mifflinjoer`] = {
+        ...resultObjectValue,
       };
+      resultObject['results'] = await resultObject2;
       this.resultArrayMifflinJ.push(resultObject);
       res.status(200).json({
         message: 'Record created',
@@ -330,26 +332,35 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
 
   async faooms(req, res, next) {
     const { kg, cm, edad, sexo } = req.body;
-    try {
-      const result = await this.EquationsServices.faooms(kg, cm, edad, sexo);
-      // const result = 'hola';docker
-      const resultObject = {
-        message: 'Equation found',
-        type: 'faooms',
 
-        datos_iniciales: {
-          peso: `${kg}`,
-          estaturacm: `${cm}`,
-          edad: `${edad}`,
-          sexo: `${sexo}`,
-        },
-        results: {
-          faooms: {
-            data: result,
-            bmr: `${result} kcal/day`,
-          },
-        },
+    const resultObject = {
+      message: 'Equation found',
+      type: 'BMR Equations',
+      datos_iniciales: {
+        peso: `${kg}`,
+        estaturacm: `${cm}`,
+        edad: `${edad}`,
+        sexo: `${sexo}`,
+      },
+    };
+
+    let resultObject2 = {};
+
+    try {
+      const resultObjectValue = await this.EquationsServices.faooms(
+        kg,
+        cm,
+        edad,
+        sexo,
+        `faooms`,
+        'No aplica la formula',
+      );
+
+      resultObject2[`faooms`] = {
+        ...resultObjectValue,
       };
+      resultObject['results'] = await resultObject2;
+
       this.resultArrayFaoO.push(resultObject);
       res.status(200).json({
         message: 'Record created',
@@ -381,28 +392,33 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
 
   async valencia(req, res, next) {
     const { kg, cm, edad, sexo } = req.body;
+    const resultObject = {
+      message: 'Equation found',
+      type: 'BMR Equations',
+      datos_iniciales: {
+        peso: `${kg}`,
+        estaturacm: `${cm}`,
+        edad: `${edad}`,
+        sexo: `${sexo}`,
+      },
+    };
+
+    let resultObject2 = {};
+
     try {
-      const result = await this.EquationsServices.valencia(kg, cm, edad, sexo);
-      // const result = 'hola';docker
-      const resultObject = {
-        message: 'Equation found',
-        type: 'valencia',
-        datos_iniciales: {
-          peso: `${kg}`,
-          estaturacm: `${cm}`,
-          edad: `${edad}`,
-          sexo: `${sexo}`,
-        },
-        results: {
-          valencia: {
-            data: result[0],
-            exception: result[1]
-              ? 'No aplica la formula a personas menores de edad'
-              : 'No exceptions',
-            bmr: `${result[0]} kcal/day`,
-          },
-        },
+      const resultObjectValue = await this.EquationsServices.valencia(
+        kg,
+        cm,
+        edad,
+        sexo,
+        `valencia`,
+        'No aplica la formula',
+      );
+
+      resultObject2[`valencia`] = {
+        ...resultObjectValue,
       };
+      resultObject['results'] = await resultObject2;
       this.resultArrayValencia.push(resultObject);
       res.status(200).json({
         message: 'Record created',
@@ -434,10 +450,35 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
 
   async schofield(req, res, next) {
     const { kg, cm, edad, sexo } = req.body;
+    const resultObject = {
+      message: 'Equation found',
+      type: 'BMR Equations',
+      datos_iniciales: {
+        peso: `${kg}`,
+        estaturacm: `${cm}`,
+        edad: `${edad}`,
+        sexo: `${sexo}`,
+      },
+    };
+
+    let resultObject2 = {};
+
     try {
-      const result = await this.EquationsServices.schofield(kg, cm, edad, sexo);
-      // const result = 'hola';docker
-      const resultObject = {
+      const resultObjectValue = await this.EquationsServices.schofield(
+        kg,
+        cm,
+        edad,
+        sexo,
+        `schofield`,
+        'No aplica la formula',
+      );
+
+      resultObject2[`schofield`] = {
+        ...resultObjectValue,
+      };
+      resultObject['results'] = await resultObject2;
+      // made this controller thinner and sent this object to the service object
+      /*    const resultObject = {
         message: 'Equation found',
         type: 'schofield',
         datos_iniciales: {
@@ -455,7 +496,7 @@ curl -X POST https://octopus-app-xm67u.ondigitalocean.app/api/v1/equations/harri
             bmr: `${result[0]} kcal/day`,
           },
         },
-      };
+      };*/
       this.resultArraySchofield.push(resultObject);
       res.status(200).json({
         message: 'Record created',
