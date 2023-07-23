@@ -63,9 +63,8 @@ function FormIntervention() {
       edad: age,
       sexo: sex,
       formulaList: numberFormulas,
-      apikey: window.localStorage["API_KEY"],
     };
-    console.log(window.localStorage["API_KEY"]);
+    //console.log(window.localStorage["API_KEY"]);
     if (numberFormulas.length === 1) {
       await axios
         .post(`${baseURL}${numberFormulas[0].api}`, objectValues)
@@ -218,35 +217,39 @@ function FormIntervention() {
 
         <div className="container__results">
           <div className="results__initialdata">
-            <strong>Initial Data</strong>
-            <p>Age: {InitialData.edad}</p>
-            <p>Height- cm: {InitialData.estaturacm}</p>
-            <p>Weight- kg: {InitialData.peso}</p>
-            <p>Sexo: {InitialData.sexo}</p>
+            <h4>Initial Data</h4>
+            <ul>
+              <li>Age: {InitialData.edad}</li>
+              <li>Height- cm: {InitialData.estaturacm}</li>
+              <li>Weight- kg: {InitialData.peso}</li>
+              <li>Sexo: {InitialData.sexo}</li>
+            </ul>
           </div>
-          <ul>
-            {bmr.results ? (
-              Object.keys(bmr.results).map((key, index) => {
-                return (
-                  <li key={index}>
-                    <div className="results__resultsdata">
-                      <strong>Results of {bmr.results[key].name}</strong>
-                      <div>
-                        <p>BMR: {bmr.results[key].results.bmr}</p>
+          <div className="container_results__resultsdata">
+            <ul>
+              {bmr.results ? (
+                Object.keys(bmr.results).map((key, index) => {
+                  return (
+                    <li key={index}>
+                      <div className="results__resultsdata">
+                        <h3>Results of {bmr.results[key].name}</h3>
+                        <div className="resultdata_bmr">
+                          <p>BMR: {bmr.results[key].results.bmr}</p>
+                        </div>
+                        <div className="resultdata_exp">
+                          <p>Exception: {bmr.results[key].results.exception}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p>Exception: {bmr.results[key].results.exception}</p>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })
-            ) : (
-              <>
-                <div>No results</div>
-              </>
-            )}
-          </ul>
+                    </li>
+                  );
+                })
+              ) : (
+                <>
+                  <div className="noresults">No results</div>
+                </>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </>

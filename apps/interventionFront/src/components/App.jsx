@@ -12,8 +12,11 @@ function App() {
 
   return (
     <>
-      <div className="header header_md--green">
-        <h1 className="title_main title-main--white">BMR Equations</h1>
+      <div className="header header_md--background1">
+        <div className="header_overlay--black">
+          <h1 className="title_main title-main--white">BMR Equations</h1>
+          <p className="separator--small">__</p>
+        </div>
       </div>
 
       <FormIntervention />

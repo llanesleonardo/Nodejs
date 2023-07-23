@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap");
+
 $backgroundwhite: #fff;
 $backgroundlightgray: lightgray;
 $backgroundgreen: #d9eee1;
@@ -19,18 +21,43 @@ ul,
 ol {
   margin: 0;
   padding: 0;
+  font-family: "Open Sans", sans-serif;
 }
 
 .header {
   width: $fullwidth;
-  height: 100px;
-  padding: 50px 0px;
 
   &_md--green {
     background-color: $backgroundgreen;
   }
+
+  &_md--background1 {
+    background-image: url(https://3lstrategy.nyc3.cdn.digitaloceanspaces.com/nutriapps/bmr/dieta.webp);
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: cover;
+  }
+
+  &_overlay--black {
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100px;
+    padding: 50px 0px;
+  }
+
   h1 {
     text-align: center;
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 0;
+  }
+
+  .separator--small {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 0;
   }
 }
 
@@ -39,6 +66,7 @@ label {
   padding: 10px;
   text-align: left;
   width: $fullwidth - 30%;
+  color: #0076e9;
 }
 
 input {

@@ -7,20 +7,25 @@
   justify-content: $justifycontentcenter;
   align-items: $alignitemcenter;
   flex-wrap: $flexwrap;
+  background-color: #0076e9;
 
   .container_form {
+    margin-top: 20px;
     width: $eightywidth - 20%;
+    border-radius: 5px;
+    background-color: white;
 
     .form__title {
       text-align: $text_align--center;
+      color: #0076e9;
     }
 
     .form__message {
       text-align: $text_align--center;
+      color: #0076e9;
     }
 
     .formIntervention {
-      background-color: $backgroundlightgray;
       padding: 30px;
       display: $displayflex;
       flex-direction: $flexcolumn;
@@ -29,11 +34,14 @@
       flex-wrap: $flexwrap;
 
       .submit-button {
-        background-color: $backgroundgreen;
+        background-color: #0076e9;
         border: 0px;
         margin-top: 20px;
         padding: 20px 10px;
         font-weight: $textstrong;
+        color: white;
+        width: 50%;
+        border-radius: 20px;
       }
     }
 
@@ -45,24 +53,82 @@
       align-items: center;
       padding: 20px 0px 20px 0px;
     }
+
+    h4 {
+      color: #0076e9;
+    }
   }
 }
 
 .container__results {
-  width: $eightywidth - 20%;
+  width: $fullwidth;
   display: $displayflex;
   flex-direction: $flexrow;
   justify-content: flex-start;
   align-items: flex-start;
-  flex-wrap: nowrap;
-  margin-top: 10px;
-  gap: 20px;
+  flex-wrap: wrap;
+  //margin-top: 10px;
+  gap: 0px;
 
   .results__initialdata {
-    width: $fullwidth - 50%;
+    width: $fullwidth;
+    background-color: #0076e9;
+    margin-bottom: 50px;
+
+    h4 {
+      color: white;
+      text-align: center;
+    }
+    ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      list-style-type: none;
+    }
+    ul li {
+      color: white;
+    }
   }
 
+  .container_results__resultsdata {
+    width: $fullwidth;
+    background-color: #f9f9f9;
+    padding-bottom: 200px;
+    padding-top: 100px;
+
+    ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      list-style-type: none;
+    }
+  }
   .results__resultsdata {
     width: $fullwidth - 50%;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid lightgrey;
+    width: 330px;
+    height: 150px;
+
+    h3 {
+      background-color: #0076e9;
+      color: white;
+      margin-top: 0;
+      padding: 10px 10px 10px 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    .resultdata_bmr {
+      font-weight: bold;
+      padding: 0px 5px;
+    }
+    .resultdata_exp {
+      font-weight: bold;
+      padding: 0px 5px;
+    }
   }
 }
